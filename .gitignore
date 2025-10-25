@@ -2,6 +2,13 @@
 __pycache__/
 *.py[codz]
 *$py.class
+# macOS system files
+.DS_Store
+
+# Ignore raw and large data
+temp_storage/
+data_raw/
+*.csv
 
 # C extensions
 *.so
