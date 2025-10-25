@@ -43,6 +43,9 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
+# Ignore local requirements folder
+Requirements/
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
