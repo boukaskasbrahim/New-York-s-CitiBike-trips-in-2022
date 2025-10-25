@@ -6,9 +6,19 @@ __pycache__/
 .DS_Store
 
 # Ignore raw and large data
+Data/
 temp_storage/
 data_raw/
 *.csv
++temp_storage/*
++!temp_storage/.gitkeep
++
++data_raw/*
++!data_raw/.gitkeep
++
++*.csv
+env
+
 
 # C extensions
 *.so
