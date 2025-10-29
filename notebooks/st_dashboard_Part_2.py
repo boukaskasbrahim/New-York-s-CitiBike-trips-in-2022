@@ -4,7 +4,6 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import os
-from keplergl import KeplerGl
 from PIL import Image
 import json
 
