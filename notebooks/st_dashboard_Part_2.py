@@ -136,12 +136,14 @@ elif page == "Interactive Map":
     Each point represents a start station, sized by total trip count.
     """)
 
+    # Aggregate trip counts per station
     df_map = (
         df.groupby(["start_station_name", "start_lat", "start_lng"], as_index=False)
         .size()
         .rename(columns={"size": "trip_count"})
     )
 
+    # Create map
     fig_map = px.scatter_mapbox(
         df_map,
         lat="start_lat",
@@ -151,6 +153,18 @@ elif page == "Interactive Map":
         color="trip_count",
         color_continuous_scale="Viridis",
         zoom=11,
+        height=600
+    )
+
+    # Style and display map
+    fig_map.update_layout(
+        mapbox_style="open-street-map",
+        title="CitiBike Start Stations – 2022",
+        margin={"r": 0, "t": 40, "l": 0, "b": 0}
+    )
+
+    st.plotly_chart(fig_map, use_container_width=True)
+
 
 
 # --- PAGE 5: RECOMMENDATIONS ---
