@@ -129,35 +129,29 @@ elif page == "Most Popular Stations":
 
 # --- PAGE 4: INTERACTIVE MAP ---
 elif page == "Interactive Map":
-    st.header("Interactive Geospatial Map – CitiBike Routes")
+    st.header("Interactive Map – CitiBike Stations and Routes")
+
     st.markdown("""
-    This interactive Kepler.gl map visualizes CitiBike trip routes across New York City in 2022.  
-    It uses your saved configuration file (**config.json**) to render layers and styles.
+    This interactive Plotly map visualizes aggregated CitiBike trips across New York City in 2022.  
+    Each point represents a start station, sized by total trip count.
     """)
 
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    map_path = os.path.join(project_root, "citibike_aggregated_map.html")
-    config_path = os.path.join(project_root, "notebooks", "config.json")
+    df_map = (
+        df.groupby(["start_station_name", "start_lat", "start_lng"], as_index=False)
+        .size()
+        .rename(columns={"size": "trip_count"})
+    )
 
-    if os.path.exists(map_path):
-        with open(map_path, "r", encoding="utf-8") as f:
-            map_html = f.read()
-        st.components.v1.html(map_html, height=600)
-    else:
-        if os.path.exists(config_path):
-            df_map = (
-                df.groupby(["start_station_name", "end_station_name", "start_lat", "start_lng", "end_lat", "end_lng"])
-                .size()
-                .reset_index(name="trip_count")
-            )
-            with open(config_path, "r", encoding="utf-8") as cfg:
-                custom_config = json.load(cfg)["config"]
+    fig_map = px.scatter_mapbox(
+        df_map,
+        lat="start_lat",
+        lon="start_lng",
+        size="trip_count",
+        hover_name="start_station_name",
+        color="trip_count",
+        color_continuous_scale="Viridis",
+        zoom=11,
 
-            map_1 = KeplerGl(height=600, data={"CitiBike 2022": df_map}, config=custom_config)
-            map_1.save_to_html(file_name=map_path)
-            st.components.v1.html(map_1._repr_html_(), height=600)
-        else:
-            st.error("Configuration or map file not found. Please check your project paths.")
 
 # --- PAGE 5: RECOMMENDATIONS ---
 elif page == "Recommendations":
