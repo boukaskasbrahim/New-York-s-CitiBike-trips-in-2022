@@ -29,12 +29,13 @@ page = st.sidebar.radio(
 # --- LOAD DATA ---
 @st.cache_data
 def load_data():
-    base_path = os.path.dirname(os.path.abspath(__file__))
-    csv_path = os.path.join(base_path, "../temp_storage/data_raw/citibike_weather_2022.csv")
-    csv_path = os.path.normpath(csv_path)
-    df = pd.read_csv(csv_path)
-    df["date"] = pd.to_datetime(df["date"])
+    # Load data directly from Google Drive
+    url = "https://drive.google.com/uc?export=download&id=1t1K4OXyBkkLikRvPWe3hjKEujjjistMl"
+    df = pd.read_csv(url)
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
     return df
+
+
 
 df = load_data()
 
